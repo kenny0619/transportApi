@@ -1,5 +1,5 @@
 const env = require("../../env");
-
+const jwt = require("jsonwebtoken");
 /**
  * isValidEmail helper method
  * @param {string} email
@@ -45,6 +45,26 @@ const empty = (input) => {
   if (input === undefined || input === "") {
     return true;
   }
+};
+
+/**
+ * Generate Token
+ * @param {string} id
+ * @returns {string} token
+ */
+const generateUserToken = (email, id, is_admin, first_name, last_name) => {
+  const token = jwt.sign(
+    {
+      email,
+      user_id: id,
+      is_admin,
+      first_name,
+      last_name,
+    },
+    env.secret,
+    { expiresIn: "3d" }
+  );
+  return token;
 };
 
 module.exports = { isValidEmail, validatePassword, isEmpty, empty };
